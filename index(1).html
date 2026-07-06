@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人作品集 | 极简玻璃拟态</title>
+    <style>
+        /* --- 全局变量与重置 --- */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --accent: #6c5ce7;
+            --blur-amount: 16px;
+            --radius: 24px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #eef2f3; 
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.8;
+            position: relative;
+        }
+
+        /* --- 动态背景光球 --- */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.8;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #a29bfe; top: -100px; left: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: #fd79a8; bottom: 10%; right: -50px; animation-delay: -2s; }
+        .orb-3 { width: 250px; height: 250px; background: #74b9ff; top: 40%; left: 30%; animation-delay: -4s; opacity: 0.6; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 50px); }
+        }
+
+        /* --- 布局容器 --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        /* --- 通用玻璃卡片样式 --- */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur-amount));
+            -webkit-backdrop-filter: blur(var(--blur-amount));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
+            border-color: rgba(255,255,255,0.9);
+        }
+
+        /* --- Header --- */
+        header {
+            text-align: center;
+            margin-bottom: 100px;
+            padding: 60px 40px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #2d3436 0%, #6c5ce7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-sub);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- 通用标题 --- */
+        .section-title {
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: var(--text-sub);
+            margin-bottom: 40px;
+            padding-left: 10px;
+            border-left: 3px solid var(--accent);
+            font-weight: 600;
+        }
+
+        /* --- 个人优势板块 --- */
+        .strengths-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 100px;
+        }
+
+        .strength-card {
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strength-number {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.5);
+            position: absolute;
+            top: 16px;
+            right: 24px;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .strength-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .strength-desc {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- 作品网格 --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 100px;
+        }
+
+        .project-card {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 320px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .project-tag {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .project-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .project-desc {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        .arrow {
+            align-self: flex-end;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .arrow {
+            transform: translateX(8px);
+            color: var(--accent);
+        }
+
+        /* --- 关于 & 联系 --- */
+        .about-section {
+            padding: 48px;
+            margin-bottom: 100px;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-text p { margin-bottom: 16px; color: var(--text-sub); }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .contact-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: scale(1.02);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        /* --- 响应式 --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .container { padding: 40px 20px; }
+            .about-section { flex-direction: column; padding: 32px; }
+            header { margin-bottom: 60px; padding: 40px 24px; }
+            .strength-number { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景装饰光球 -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="container">
+        
+        <!-- 头部介绍 -->
+        <header class="glass-card">
+            <h1>陈默</h1>
+            <p class="subtitle">数字产品设计师 / 前端开发者<br>专注于创造干净、有灵魂的数字体验</p>
+        </header>
+
+        <!-- 个人优势板块 -->
+        <div class="section-title">核心优势</div>
+        <div class="strengths-grid">
+            <div class="glass-card strength-card">
+                <span class="strength-number">01</span>
+                <h3 class="strength-title">设计系统思维</h3>
+                <p class="strength-desc">不只是画界面，而是构建可扩展的设计体系。擅长制定设计规范与组件库，确保产品从0到1的视觉一致性。</p>
+            </div>
+
+            <div class="glass-card strength-card">
+                <span class="strength-number">02</span>
+                <h3 class="strength-title">全栈落地能力</h3>
+                <p class="strength-desc">精通现代前端技术栈，能独立完成高保真原型到生产级代码的转化，消除设计与开发之间的鸿沟。</p>
+            </div>
+
+            <div class="glass-card strength-card">
+                <span class="strength-number">03</span>
+                <h3 class="strength-title">用户体验驱动</h3>
+                <p class="strength-desc">拒绝自嗨式设计。每一个交互决策都基于用户调研与数据验证，在美学与可用性之间找到最优解。</p>
+            </div>
+        </div>
+
+        <!-- 精选项目 -->
+        <div class="section-title">精选作品</div>
+        <div class="grid">
+            <a href="#" class="glass-card project-card">
+                <div>
+                    <div class="project-tag">界面体验设计</div>
+                    <h3 class="project-title">金融科技数据看板</h3>
+                    <p class="project-desc">为新一代金融科技公司设计的极简数据可视化后台，强调信息层级与长时间阅读的舒适度。</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="#" class="glass-card project-card">
+                <div>
+                    <div class="project-tag">品牌视觉</div>
+                    <h3 class="project-title">Aura 护肤品牌</h3>
+                    <p class="project-desc">高端护肤品牌全案设计。从标志到包装系统，传递纯净、自然、可持续的品牌理念。</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="#" class="glass-card project-card">
+                <div>
+                    <div class="project-tag">创意开发</div>
+                    <h3 class="project-title">Mono 建筑事务所</h3>
+                    <p class="project-desc">建筑事务所官网重构。使用 WebGL 技术实现沉浸式三维空间浏览体验，提升品牌调性。</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+        </div>
+
+        <!-- 关于我 -->
+        <div class="section-title">关于我</div>
+        <div class="glass-card about-section">
+            <div class="about-text">
+                <p>我相信好的设计应该是隐形的。在超过五年的设计生涯中，我一直致力于通过减少视觉噪音来突出内容本身，让信息自然流动。</p>
+                <p>工作之余，我喜欢研究字体排印、拍摄街头摄影，以及探索最新的网页特效技术。如果你有有趣的项目，欢迎随时联系我。</p>
+                <a href="mailto:hello@example.com" class="contact-btn">取得联系</a>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2026 陈默 · 以极简与玻璃拟态构筑数字体验
+        </footer>
+
+    </div>
+
+</body>
+</html>
